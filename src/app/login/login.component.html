@@ -1,0 +1,38 @@
+<div class="col-12 mt-5">
+    <div>
+      <h2 style="color:peru; text-align: center;">
+        Login to Task Management
+      </h2>
+     <div class="row">
+       <div class="col-md-3">
+ 
+       </div>
+       <div class="col-md-6">
+         <div class="login-box mt-5 col-md">
+           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+             <div class="mt-2">
+               <label for="email">Email:</label>
+               <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your Email"/>
+             </div>
+             <div class="mt-2">
+               <label for="password">Password:</label>
+               <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter your Password" />
+             </div>
+    
+             <p class="error" *ngIf="errMsg"> {{errMsg}}</p>
+             <div class="login-btn col-md-12" >
+               <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+               <a routerLink="/signup" class="signup">Signup Now</a>
+             </div>             
+           </form>
+         </div> 
+       </div>
+ 
+       <div class="col-md-3">
+ 
+       </div>
+     </div>
+      
+
+    </div>
+  </div>

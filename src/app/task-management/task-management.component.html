@@ -1,0 +1,273 @@
+<div class="container-fluid mt-5">
+   <div class="col-12">
+       <button class="btn btn-primary" (click)="createTask()">
+          Create Task
+       </button>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="table-responsive mt-5" >
+      <table>
+      <thead>
+          <tr>
+              <th>S.NO</th>
+              <th>Task</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let task of allTasks; let i = index;">
+              <td>{{i + 1}}</td>
+              <td>{{task.task}}</td>
+              <td>{{task.priority}}</td>
+              <td>{{task.status}}</td>
+              <td>{{task.start_date}} </td>
+              <td>{{task.end_date}}</td>
+              <td>
+                  <a class="cursorpointer edit" (click)="editTaskModel(task._id)">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      Edit
+                  </a>
+                  <a class="cursorpointer edit" (click)="deleteTask(task._id)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                      Delete
+                  </a>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  </div>
+</div>
+
+
+<ng-template #createtaskManagement>
+    <div class="card-header">
+      <!-- Title -->
+      <h4 class="card-header-title">Create Task</h4>
+      <!-- Close -->
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">×</span>
+        <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+      </button>
+    </div>
+    <form class="p-4" (ngSubmit)="addTask()">
+        <div class="d-flex">
+            <div class="col-5">
+              <label class="mb-0"> Task <span class="req">*</span></label>
+            </div>
+            <div class="col-5">
+          <input
+            class="form-control m-2"
+            type="text"
+            placeholder="Enter Task Name"
+            required
+            [(ngModel)]="task.task"
+            name="taskName"
+            #taskName="ngModel"
+          />
+          </div>
+          </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> Priority <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            class="form-control m-2"
+            type="text"
+            placeholder="Enter Priority"
+            required
+            [(ngModel)]="task.priority"
+            name="taskPriority"
+            #taskPriority="ngModel"
+          />
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> Status <span class="req">*</span> </label>
+        </div>
+        <div class="col-5">
+          <select
+            required
+            class="custom-select form-control m-2"
+            data-toggle="select"
+            [(ngModel)]="task.status"
+            name="taskStatus"
+            #taskStatus="ngModel"
+            id="taskStatus"
+          >
+          <option value="" selected disabled>Select Task Status</option>
+          <option value="started">Started</option>
+          <option value="missed">Missed</option>
+            <option value="completed">Completed</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0">Start Date <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            type="date"
+            class="form-control m-2"
+            required
+            placeholder="Start Date"
+            [(ngModel)]="task.start_date"
+            name="task_start_date"
+            #task_start_date="ngModel"
+            min="{new Date().toISOString().split('T')[0]}"
+          />
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> End Date <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            type="date"
+            class="form-control m-2"
+            required
+            placeholder="End Date"
+            [(ngModel)]="task.end_date"
+            name="task_end_date"
+            #Task_end_date="ngModel"
+            min="{new Date().toISOString().split('T')[0]}"
+          />
+        </div>
+      </div>
+      <div class="ml-auto" *ngIf="errMsg">
+        <div class="alert alert-danger pr-0 mb-0">{{ errMsg }}</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+  </ng-template>
+
+
+
+  <ng-template #edittaskManagement>
+    <div class="card-header">
+      <!-- Title -->
+      <h4 class="card-header-title">Edit Task</h4>
+      <!-- Close -->
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">×</span>
+        <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+      </button>
+    </div>
+    <form class="p-4" (ngSubmit)="editTask(edittask._id)">
+        <div class="d-flex">
+            <div class="col-5">
+              <label class="mb-0"> Task <span class="req">*</span></label>
+            </div>
+            <div class="col-5">
+          <input
+            class="form-control m-2"
+            type="text"
+            placeholder="Enter Task Name"
+            required
+            [(ngModel)]="edittask.task"
+            name="taskName"
+            #taskName="ngModel"
+          />
+          </div>
+          </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> Priority <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            class="form-control m-2"
+            type="text"
+            placeholder="Enter Priority"
+            required
+            [(ngModel)]="edittask.priority"
+            name="taskPriority"
+            #taskPriority="ngModel"
+          />
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> Status <span class="req">*</span> </label>
+        </div>
+        <div class="col-5">
+          <select
+            required
+            class="custom-select form-control m-2"
+            data-toggle="select"
+            [(ngModel)]="edittask.status"
+            name="taskStatus"
+            #taskStatus="ngModel"
+            id="taskStatus"
+          >
+          <option value="" selected disabled>Select Task Status</option>
+            <option value="started">Started</option>
+            <option value="missed">Missed</option>
+            <option value="completed">Completed</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0">Start Date <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            type="date"
+            class="form-control m-2"
+            required
+            placeholder="Start Date"
+            [(ngModel)]="edittask.start_date"
+            name="task_start_date"
+            #task_start_date="ngModel"
+            min="{new Date().toISOString().split('T')[0]}"
+          />
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-5">
+          <label class="mb-0"> End Date <span class="req">*</span></label>
+        </div>
+        <div class="col-5">
+          <input
+            type="date"
+            class="form-control m-2"
+            required
+            placeholder="End Date"
+            [(ngModel)]="edittask.end_date"
+            name="task_end_date"
+            #Task_end_date="ngModel"
+            min="{new Date().toISOString().split('T')[0]}"
+          />
+        </div>
+      </div>
+      <div class="ml-auto" *ngIf="errMsg">
+        <div class="alert alert-danger pr-0 mb-0">{{ errMsg }}</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Edit Task</button>
+    </form>
+  </ng-template>
